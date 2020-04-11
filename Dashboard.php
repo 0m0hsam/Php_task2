@@ -22,9 +22,9 @@
 </p>
 
 <p>
-    //use to take logout time
 <label>login time:<?php echo $logout_time=date('D M Y  H:i', time()); 
 if(isset($_SESSION['logout_time']) && !empty($_SESSION['logout_time'])){
+      //use to take logout time
     $_SESSION['logout_time']= $logout_time;}
 ?></label>
 </p>
