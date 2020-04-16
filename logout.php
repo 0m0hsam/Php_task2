@@ -1,7 +1,7 @@
 <?php
  session_start();
  include('Dashboard.php');
- 
+ // Create a logtime folder to save a user logout 
  $email=$_SESSION['email'];
 $id=$_SESSION['id'];
 $log_timer=date('H:i', time());
