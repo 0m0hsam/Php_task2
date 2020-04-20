@@ -18,7 +18,7 @@ $_SESSION['email']= $email;
             $allUsers= scandir("db");
             $countallUsers= count($allUsers);
             $nextUserid=($countallUsers-2);
-            
+          
            //check if user already exist
      for($counter=0; $counter < $countallUsers; $counter++){
        $currentUsers= $allUsers[$counter];
@@ -30,19 +30,15 @@ $_SESSION['email']= $email;
             $DBpassword= $userObject->password;
            $Userpassword= password_verify($password, $DBpassword);
            if($password == $Userpassword){
-            echo $_SESSION['id']= $userObject->id;
-            echo $_SESSION['firstname']= $userObject->firstname;
-            echo $_SESSION['lastname']= $userObject->lastname;
-            echo $_SESSION['email']= $userObject->email;
+            echo $_SESSION['loged_in']= $userObject->id;
+            echo $_SESSION['firstname_login']= $userObject->firstname;
+            echo $_SESSION['lastname_login']= $userObject->lastname;
+            echo $_SESSION['email_login']= $userObject->email;
             echo $_SESSION['Reg_date_time']= $userObject->Reg_date_time;
             echo $_SESSION['position']= $userObject->position;
-
+           
+                           
             
-            if($_SESSION['position']=='HOD'){
-              $search='<form action="index.php" method="POST">
-              <input type="text" name="email">
-              <input type="submit" value="Login" name="login">';
-           }
             header('Location: dashboard.php');
             die();
            }else{

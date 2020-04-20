@@ -42,18 +42,18 @@
         <select name="department">
             <label>Select Department:</label><br>
             <option>Select your department</option>
-            <option <?php if(isset($_SESSION['UX/UI Design']) && !empty($_SESSION['department'])){
-           echo "Socail Media";
-        };?>>Social Media</option>
-            <option <?php if(isset($_SESSION['frontend Design']) && !empty($_SESSION['department'])){
-           echo "frontend Design";
-        };?>>Frontend Design</option>
-            <option <?php if(isset($_SESSION['Backend/Coding']) && !empty($_SESSION['department'])){
-           echo "Backend/Coding";
-        };?>>Backend/Coding</option>
-            <option <?php if(isset($_SESSION['Mobile']) && !empty($_SESSION['Mobile'])){
-           echo "Grapic Design";
-        };?>>Grapics Desigin</option>
+            <option <?php if(isset($_SESSION['Maternity']) && !empty($_SESSION['department'])){
+           echo "selected"."Maternity";
+        };?>>Maternity</option>
+            <option <?php if(isset($_SESSION['Surgery']) && !empty($_SESSION['department'])){
+           echo "selected"."Surgery";
+        };?>>Surgery</option>
+            <option <?php if(isset($_SESSION['Radiology']) && !empty($_SESSION['department'])){
+           echo "selected"."Radiology";
+        };?>>Radiology</option>
+            <option <?php if(isset($_SESSION['Pharmacy']) && !empty($_SESSION['department'])){
+           echo "selected"."Pharmacy";
+        };?>>Pharmacy</option>
         </select><br>
     </p>
     <p>
@@ -61,15 +61,15 @@
         <select name="position">
             <label>Select</label>
             <option>Select your position</option>
-        <option <?php if(isset($_SESSION['position']) && $_SESSION['position']){
-           echo "valu= HOD";
-        };?>>HOD</option>
-            <option <?php  if(isset($_SESSION['position']) && $_SESSION['position']){
-           echo "value= REP";
-        };?>>REP</option>
-            <option <?php  if(isset($_SESSION['position']) && $_SESSION['position']){
-           echo "value= Member";
-        };?>>MEMBE</option>
+        <option <?php if(isset($_SESSION['Medical Director']) && $_SESSION['position']){
+           echo "selected"."Medical Director";
+        };?>>Medical Director</option>
+            <option <?php  if(isset($_SESSION['Medicel TM']) && $_SESSION['position']){
+           echo "selected"."Medicel TM";
+        };?>>Medical TM</option>
+            <option <?php  if(isset($_SESSION['Patient']) && $_SESSION['position']){
+           echo "selected"."Patient";
+        };?>>Patient</option>
         </select><br><br>
         <input type="submit" name="Sign up">
     </p>
