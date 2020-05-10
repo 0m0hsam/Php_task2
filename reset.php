@@ -15,7 +15,8 @@ include ('processreset.php');
          }
 
 ?>
-<h3>Reset Password</h3>
+<h3>Reset Password</h3><br>
+<a href="dashboard.php"><button type="submit">Home</button></a><br>
 <p>Reset Password associated with your accoount email</p>
 <?php   if (isset($_SESSION['try'])){
     echo "<span style= color:red>".$_SESSION['email_match']."</span>";
@@ -46,4 +47,5 @@ include ('processreset.php');
      <input type="submit" value="Reset Password">
  </p>
 </form>
+
 

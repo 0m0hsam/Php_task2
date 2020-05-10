@@ -1,5 +1,4 @@
 <h3>Process Registration page</h3>
-//Create a folder name db to save user registration data Json file
 <?php
 @session_start();
 
@@ -13,8 +12,8 @@ $errorcount = 0;
 @$position = $_POST['position'] != "" ? $_POST['position'] : $errorcount++;
 
 
-$_SESSION['firstname']=str_replace('  ','',$firstname);
-$_SESSION['lastname']=str_replace('  ','',$lastname);
+$_SESSION['firstname']=ucfirst(str_replace('  ','',$firstname));
+$_SESSION['lastname']=ucfirst(str_replace('  ','',$lastname));
 $_SESSION['phone']= $phone;
 $_SESSION['email']=$email;
 $_SESSION['department']=$department;
@@ -58,7 +57,7 @@ $_SESSION['position']= $position;
                   die();
                 }
               }
-              //create db folder to save user data into a Json file
+              //save user data into file
               file_put_contents("db/User".$email . ".json",json_encode($userobject));
               $_SESSION['message']="Succesfully signup! you can now login ";
                   header("Location: index.php");
