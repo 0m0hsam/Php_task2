@@ -1,13 +1,12 @@
-<?php
-    session_start();
-    include_once ('processlog.php');
-    
+<?php session_start();
+include ('processcheck.php');
     
 ?>
-<h2>Welcome to Dashboard<h2>
+<h2>Welcome to SNH Hospital App<h2>
+<?php   @homepage_alart();?>
 <p>
-<label>Username :<?php if(isset($_SESSION['firstname'])&& !empty($_SESSION['firstname']) && isset($_SESSION['lastname'])&& !empty($_SESSION['lastname'])){
-          $_SESSION['id']; echo $_SESSION['firstname']."  ".$_SESSION['lastname'];}?>
+<label>Username :<?php if(isset($_SESSION['firstname_login'])&& !empty($_SESSION['firstname_login']) && isset($_SESSION['lastname_login'])&& !empty($_SESSION['lastname_login'])){
+          $_SESSION['loged_in']; echo ucfirst($_SESSION['firstname_login'])."  ".ucfirst($_SESSION['lastname_login']);}?>
 </label>
 </p>
 <p>
@@ -16,20 +15,33 @@
 </label>
 </p>
 <p>
-<label>login email:<?php if(isset( $_SESSION['email'])&& !empty( $_SESSION['email'])){
-           echo  $_SESSION['email'];}?>
+<label>login email:<?php if(isset( $_SESSION['email_login'])&& !empty( $_SESSION['email_login'])){
+            echo  $_SESSION['email_login'];}?>
 </label>
 </p>
 
 <p>
-<label>login time:<?php echo $logout_time=date('D M Y  H:i', time()); 
-if(isset($_SESSION['logout_time']) && !empty($_SESSION['logout_time'])){
-      //use to take logout time
-    $_SESSION['logout_time']= $logout_time;}
-?></label>
+<label>login time:</label>
+<?php 
+if(isset($_SESSION['email_login']) && !empty($_SESSION['email_login'])){
+    //use to take logout time
+    echo date('D M Y  H:i', time());
+} 
+?>
 </p>
-
 
 <p>
-<h4>Home   <a href="logout.php">Logout</a>    <a href="rest.php">Reset password</a></h4>
+<?php
+//<label>Last logout time:</label>logout_checker();?>
 </p>
+
+<form method="POST" action="Dashboard.php">
+<button type="logout" style="color:red" value="<?php $_SESSION['email_login']; ?>"name="logout" >Log out</button>&nbsp;&nbsp;
+</form>
+<p><h4><a href="dashboard.php">Home</a>      <a href="reset.php">Reset password</a> </h4></p>
+<?php
+ if(@$_SESSION['position'] == "Medical Director"){
+    checkuser();
+ };             
+ alartPatient();
+ ?>
