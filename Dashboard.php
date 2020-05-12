@@ -1,13 +1,14 @@
-<?php 
+
+<?php session_start();
 include ('processcheck.php');
-session_unset();
     
 ?>
-<h2>Welcome to Dashboard<h2>
-<?php session_start();  @homepage_alart();?>
+<h2>Welcome to SNH Hospital App<h2>
+<?php   @homepage_alart();?>
 <p>
 <label>Username :<?php if(isset($_SESSION['firstname_login'])&& !empty($_SESSION['firstname_login']) && isset($_SESSION['lastname_login'])&& !empty($_SESSION['lastname_login'])){
-          $_SESSION['loged_in']; echo $_SESSION['firstname_login']."  ".$_SESSION['lastname_login'];}?>
+          $_SESSION['loged_in']; echo ucfirst($_SESSION['firstname_login'])."  ".ucfirst($_SESSION['lastname_login']);}?>
+
 </label>
 </p>
 <p>
@@ -22,21 +23,29 @@ session_unset();
 </p>
 
 <p>
-<label>login time:<?php echo $logout_time=date('D M Y  H:i', time()); 
-if(isset($_SESSION['logout_time']) && !empty($_SESSION['logout_time'])){
-   session_start();
+
+<label>login time:</label>
+<?php 
+if(isset($_SESSION['email_login']) && !empty($_SESSION['email_login'])){
     //use to take logout time
-    $_SESSION['log_time']= $logout_time;}
-?></label>
+    echo date('D M Y  H:i', time());
+} 
+?>
+
 </p>
 
-
 <p>
-<a href="logout.php" ><button type="logout" style="color:red" name="logout" >Log out</button></a> &nbsp;&nbsp;<h4><a href="dashboard.php">Home</a>      <a href="reset.php">Reset password</a> </h4>
- 
-<?php if(@$_SESSION['position'] == "Medical Director"){
+<?php
+//<label>Last logout time:</label>logout_checker();?>
+</p>
+
+<form method="POST" action="Dashboard.php">
+<button type="logout" style="color:red" value="<?php $_SESSION['email_login']; ?>"name="logout" >Log out</button>&nbsp;&nbsp;
+</form>
+<p><h4><a href="dashboard.php">Home</a>      <a href="reset.php">Reset password</a> </h4></p>
+<?php
+ if(@$_SESSION['position'] == "Medical Director"){
     checkuser();
-             };
-             
- alartPatient();?>
-</p
+ };             
+ alartPatient();
+ ?>

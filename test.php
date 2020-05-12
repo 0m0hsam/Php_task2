@@ -1,3 +1,4 @@
+
 <?php session_destroy(); 
 $curl = curl_init();
 
@@ -56,5 +57,6 @@ if(!$transaction->data && !$transaction->data->link){
 // redirect to page so User can pay
 // uncomment this line to allow the user redirect to the payment page
 header('Location: ' . $transaction->data->link);
+
 
 ?>

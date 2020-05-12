@@ -1,3 +1,4 @@
+
 <?php session_start();
     include('processcheck.php');
 
@@ -10,9 +11,8 @@
 <form action="checkpatient.php" method="POST">
 <p>
     <label>Search to Check all hospital appointment</label><br>
-    <input type="text" name="department" placeholder="Patient Department">
-    <input type="text" name="email" placeholder="Patient email">
+    <input type="text" name="department_appoint" placeholder="Patient Department">
+    <input type="text" name="email_appoint" placeholder="Patient email">
     <input type="submit" value="Search">
 </p>
 <?php patient();?>
-</form>

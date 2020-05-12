@@ -1,3 +1,4 @@
+
 <?php
 // To accept patient appointment 
   function accept_appointment(){?>
@@ -27,35 +28,35 @@
  function patient(){
 
           // To check patient appointment
-          if(isset($_POST['department'])&&!empty($_POST['department'])&&isset($_POST['email'])&&!empty($_POST['email'])){
-            $department=str_replace( ' ','',str_replace('/','',$_POST['department']));
-            $email=$_POST['email'];
+          if(isset($_POST['department_appoint'])&&!empty($_POST['department_appoint'])&&isset($_POST['email_appoint'])){
+            $department_appoint=str_replace( ' ','',str_replace('/','',$_POST['department_appoint']));
+            $email_appointment=$_POST['email_appoint'];
   
             
-             $alllogout= scandir("appointmentDB");
-      $countalllogout= count($alllogout);
-      $nextUserid=($countalllogout-2);
+      $alllogout= scandir("appointmentDB");
+      $appointmentlog= count($alllogout);
+      $nextUserid=($appointmentlog-2);
     
      
-        for($counter=0 ; $counter < $countalllogout; $counter++){
-         $currentlogout= $alllogout[$counter];
+        for($counter=0 ; $counter < $appointmentlog; $counter++){
+         $current_appointment= $alllogout[$counter];
                 
-          if($currentlogout == "patient".$department.$email.".json"){
               //check patient file
-              @$logoutstring= file_get_contents("appointmentDB/patient".$department.$email.".json");
+              @$logoutstring= file_get_contents("appointmentDB/$current_appointment");
               @$userObject= json_decode($logoutstring);
-              $firstname= $userObject->firstname;
-              $lastname= $userObject->lastname;
-              $appointment= $userObject->appointment;
-              $department= $userObject->department;
-              $phone= $userObject->phone;
-              $email= $userObject->email;
-              $complain= $userObject->complain;
-              $gender= $userObject->gender;
-              $appointment_date= $userObject->appointment_date;
-              $appointment_time= $userObject->appointment_time;
-
+              @$email= $userObject->email;
+              @$department= $userObject->department;
+              @$firstname= $userObject->firstname;
+              @$lastname= $userObject->lastname;
+              @$appointment= $userObject->appointment;
+              @$phone= $userObject->phone;
+              @$complain= $userObject->complain;
+              @$gender= $userObject->gender;
+              @$appointment_date= $userObject->appointment_date;
+              @$appointment_time= $userObject->appointment_time;
             //Printout patient appointment
+            if($department_appoint == $department||$email_appointment == $email){
+              if($email==true &&$department==true &&$lastname==true &&$firstname==true){
               echo "Medical appointment for $department department";
               echo '<li> Name: '.$firstname.' '.$lastname.'</li>';
               echo '<li> Phone number: '.$phone.'</li>';
@@ -66,8 +67,10 @@
               echo '<li> Complain: '.$complain.'</li>';
               echo '<li> Appointment Date: '.$appointment_date.'</li>';
               echo '<li> Appointment Time: '.$appointment_time.'</li>';
+            
              
               accept_appointment();
+              }
             if(isset($_POST['department'])&&!empty($_POST['department'])&&isset($_POST['email'])&&!empty($_POST['email'])&&isset($_POST['feedback'])&&!empty($_POST['feedback'])){
               $department=$_POST['department'];
               $email=$_POST['email'];
@@ -95,11 +98,9 @@
 
 
             }
-              
-            die();
-          }
 
           }
+        }
           echo "Please check back! $department  department has no pending patient appointment. ";
 
       }else{
@@ -113,7 +114,6 @@ function checkuser(){
 echo '<form action="dashboard.php" method="POST">
              <p>
              <h4>Search for logout time<h4>
-             <label>Enter Logout Date:<br>in this format 02/05/2020</label><br> <input type="text" name="date"><br>
              <label> Enter User Email:</label><br> <input type="text" name="email">
              <button type="submit">search</button> </form>
              </p>';
@@ -144,8 +144,7 @@ echo '<form action="dashboard.php" method="POST">
                   die();
                 }
                    //check user logout time
-                if(isset($_POST['date'])&&!empty($_POST['date'])&&isset($_POST['email'])&&!empty($_POST['email'])){
-                  $date=str_replace( ' ','',str_replace('/','',$_POST['date']));
+                if(isset($_POST['email'])&&!empty($_POST['email'])){
                   $email=$_POST['email'];
         
                   
@@ -157,16 +156,18 @@ echo '<form action="dashboard.php" method="POST">
               for($counter=0 ; $counter < $countalllogout; $counter++){
                $currentlogout= $alllogout[$counter];
 
-                if($currentlogout == $date.$email.".json"){
                     //check user logout 
-                    @$logoutstring= file_get_contents("logtime/$date".$email.".json");
+                    @$logoutstring= file_get_contents("logtime/$currentlogout");
                     @$userObject= json_decode($logoutstring);
-                    $logout_time= $userObject->logout_time;
+                    @$logout_email= $userObject->logout_email;
+                    @$logout_time= $userObject->logout_time;
+                    if($email == $logout_email){
                     echo '<li>'.$email.' last logout time '.$logout_time.'</li>';
-                    
-
+                    $logout_checker=True;
+                  }
                 }
-
+                if(@$logout_checker == false){
+                  echo "No logout time for this $email";
                 }
             } die();
         }
@@ -181,7 +182,7 @@ echo '<form action="dashboard.php" method="POST">
           //Checking database
         $allPays = scandir("payment");
         $countallPays= count($allPays);
-        $nextUserid=($countallPays-2);
+        $nextUserid=($countallPays);
         
         for($counter=3; $counter < $countallPays; $counter++){
             $currentallPays= $allPays[$counter];
@@ -202,16 +203,19 @@ echo '<form action="dashboard.php" method="POST">
                 if($departmentPay == $department){
                   echo "Medical payment made and department";
                   echo "<li>Date/time:$pay_time Name:$firstname $lastname  Email: $email Phone: $phone <br> Department: $department Amount: $amount</li>";
-              
+                  @$nopay=True;
                 }
                 if($departmentPay == "ALL"){
+                  @$nopay=True;
                   echo "Medical payment made and department";
                   echo "<li>Date/time:$pay_time Name:$firstname $lastname  Email: $email Phone: $phone <br> Department: $department Amount: $amount</li>"; 
               }
       
+            }if(@$nopay==false){
+           echo "Please check back! $departmentPay  department has no pending patient appointment";
         }
-           echo "Please check back! $department  department has no pending patient appointment";
-        die();
+      
+           die();
   }
 }
   
@@ -244,21 +248,44 @@ echo '<form action="dashboard.php" method="POST">
       
   }
 }
+function logout_checker(){
+  if(isset($_SESSION['email_login'])&&!empty($_SESSION['email_login'])){
+    $alllogout= scandir("logtime");
+              $countalllogout= count($alllogout);
+              $nextUserid=($countalllogout);
+              $timer_id=str_ireplace(":","",date('D M Y H i', time()));
+             //check if user already exist
+                for($counter=0 ; $counter < $countalllogout; $counter++){
+                 $currentlogout= $alllogout[$counter];
+  
+                      //check user logout 
+                      @$logoutstring= file_get_contents("logtime/$timer_id".$_SESSION['email_login'].".json");
+                      @$userObject= json_decode($logoutstring);
+                      @$logout_time= $userObject->logout_time;
+                        echo $logout_time;
+                  }
+                }  
+}
 function homepage_alart(){
-    include_once('dashborad.php');
-    if(isset($_POST['logout'])){
-    echo $email=$_SESSION['email_login'];
+      if(isset($_POST['logout'])){
+echo$email=$_SESSION['email_login'];
 $id=$_SESSION['id'];
 $id=$id+1;
-$logout_timer=date('d m Y', time());
+$logout_timer=date('D M Y H i', time());
 echo $log_id=str_ireplace(" ","",$logout_timer);
+$timer_id=str_ireplace(":","",date('D M Y H i', time()));
      $logoutobject=[
          'logout_counter'=>$id,
-         'logout_time'=>$logout_time,
+         'logout_time'=>$logout_timer,
          'logout_email'=>$email
      ];
-     file_put_contents("logtime/$log_id".$email.".json",json_encode($logoutobject));
+     file_put_contents("logtime/$timer_id".$email.".json",json_encode($logoutobject));
      echo "Data saved";
+     if($email){
+       session_unset();
+       session_destroy();
+       header('Location: index.php');
+     }
     }
 
   if(isset($_SESSION['email_login'])&&!empty($_SESSION['email_login'])){
