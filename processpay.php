@@ -1,3 +1,4 @@
+
 <?php
 if(isset($_POST['firstname'])&&isset($_POST['lastname'])&&isset($_POST['phone'])&&isset($_POST['email'])&&isset($_POST['department'])&&isset($_POST['amount'])&&isset($_POST['pay_reasons'])){
 session_start();
@@ -78,4 +79,5 @@ $_SESSION['pay_reasons']= $pay_reasons;
         echo "<span style='color:red'>fill in all fields in the form</span>";
   }
 } 
+
 ?>

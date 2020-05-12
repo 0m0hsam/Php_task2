@@ -1,3 +1,4 @@
+
 <?php session_start();
     include('processcheck.php');
 
@@ -15,4 +16,3 @@
     <input type="submit" value="Search">
 </p>
 <?php patient();?>
-</form>

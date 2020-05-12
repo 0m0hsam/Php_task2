@@ -1,3 +1,4 @@
+
 <h3>Patient appointment form</h3>
 <?php
 @session_start();

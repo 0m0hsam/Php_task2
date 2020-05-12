@@ -1,3 +1,4 @@
+
 <?php
 // To accept patient appointment 
   function accept_appointment(){?>

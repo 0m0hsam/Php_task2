@@ -1,3 +1,4 @@
+
 <?php session_start();
 include ('processcheck.php');
     
@@ -7,6 +8,7 @@ include ('processcheck.php');
 <p>
 <label>Username :<?php if(isset($_SESSION['firstname_login'])&& !empty($_SESSION['firstname_login']) && isset($_SESSION['lastname_login'])&& !empty($_SESSION['lastname_login'])){
           $_SESSION['loged_in']; echo ucfirst($_SESSION['firstname_login'])."  ".ucfirst($_SESSION['lastname_login']);}?>
+
 </label>
 </p>
 <p>
@@ -21,6 +23,7 @@ include ('processcheck.php');
 </p>
 
 <p>
+
 <label>login time:</label>
 <?php 
 if(isset($_SESSION['email_login']) && !empty($_SESSION['email_login'])){
@@ -28,6 +31,7 @@ if(isset($_SESSION['email_login']) && !empty($_SESSION['email_login'])){
     echo date('D M Y  H:i', time());
 } 
 ?>
+
 </p>
 
 <p>

@@ -1,3 +1,4 @@
+
 <?php   session_start();
         include ('processappoint.php');
         
@@ -93,3 +94,4 @@
     <label> Click home to cancel appointment</label>
    <a href="dashboard.php"><button type="submit">Home</button></a>
 </p>
+
