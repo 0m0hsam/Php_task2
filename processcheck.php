@@ -1,4 +1,3 @@
-
 <?php
 // To accept patient appointment 
   function accept_appointment(){?>
@@ -8,12 +7,12 @@
  <p> 
    fill in to reply patient appointment<br> 
     <label>Patient department</label><br>
-    <input type="text" name="department" placeholder="Patient Department"><br>
+    <input type="text" name="department_feedback" placeholder="Patient Department"><br>
 </p>
 
 <p>
     <label>Accepted email</label><br>
-    <input type="text" name="email" placeholder="Accepted email"><br>
+    <input type="text" name="email_feedback" placeholder="Accepted email"><br>
 </p>
 <p>
     <label>Patient feedback</label><br>
@@ -32,10 +31,58 @@
             $department_appoint=str_replace( ' ','',str_replace('/','',$_POST['department_appoint']));
             $email_appointment=$_POST['email_appoint'];
   
-            
+            accept_appointment();
       $alllogout= scandir("appointmentDB");
       $appointmentlog= count($alllogout);
       $nextUserid=($appointmentlog-2);
+      if(isset($_POST['department_feedback'])&&!empty($_POST['department_feedback'])&&isset($_POST['email_feedback'])&&!empty($_POST['email_feedback'])&&isset($_POST['feedback'])&&!empty($_POST['feedback'])){
+        $department=$_POST['department_feedback'];
+        $email=$_POST['email_feedback'];
+        $feedback=$_POST['feedback'];
+         accept_appointment();
+                $allUsers= scandir("acceptAppointment");
+        $countallUsers= count($allUsers);
+      echo "Okay";
+      die();
+      $userobject=[
+        'email'=>$email,
+        'department'=>$department,
+        'feedback'=>$feedback,
+        'PersonsName'=>$_SESSION['firstname_login']." ".$_SESSION['lastname_login'],
+        'Personsemail'=>$_SESSION['email_login'],
+        'Reg_date_time'=> date('D M Y / H:i',time()),
+      ];
+          echo "Okay 1";
+       if(isset($userObject)){
+        $acceptedlog= scandir("appointmentDB");
+        $accept= count($acceptedlog);
+        $nextUserid=($accept);
+      
+          for($counter=0 ; $counter < $accept; $counter++){
+           $current_accept= $acceptedlog[$counter];
+
+           @$logoutstring= file_get_contents("appointmentDB/$current_accept");
+           @$userObject= json_decode($logoutstring);
+           @$fixed_email= $userObject->email;
+           @$fixed_department= $userObject->department;
+           if($department == $fixed_department && $email == $fixed_email){
+            $time= date('H i',time());
+            echo " Okay 2";
+            die();
+            file_put_contents("acceptAppointment/$time".$email.".json",json_encode($userobject));
+
+            if(unlink($current_accept)){
+              $_SESSION['message']="Succesfully accepted patient appointment ";
+              header("Location: dashboard.php");
+                die();
+            }
+          }
+       }
+      }else{
+        echo "<span style='color:red'>$email of $department appiontment approver! failed Please try again</span>";
+          die();
+      }
+      }
     
      
         for($counter=0 ; $counter < $appointmentlog; $counter++){
@@ -44,8 +91,8 @@
               //check patient file
               @$logoutstring= file_get_contents("appointmentDB/$current_appointment");
               @$userObject= json_decode($logoutstring);
-              @$email= $userObject->email;
-              @$department= $userObject->department;
+              @$email_accepted= $userObject->email;
+              @$department_accepted= $userObject->department;
               @$firstname= $userObject->firstname;
               @$lastname= $userObject->lastname;
               @$appointment= $userObject->appointment;
@@ -55,60 +102,32 @@
               @$appointment_date= $userObject->appointment_date;
               @$appointment_time= $userObject->appointment_time;
             //Printout patient appointment
-            if($department_appoint == $department||$email_appointment == $email){
-              if($email==true &&$department==true &&$lastname==true &&$firstname==true){
-              echo "Medical appointment for $department department";
+            if($department_appoint == $department_accepted||$email_appointment == $email_accepted){
+              if($email_accepted==true &&$department_accepted==true &&$lastname==true &&$firstname==true){
+              echo "Medical appointment for $department_accepted department";
               echo '<li> Name: '.$firstname.' '.$lastname.'</li>';
               echo '<li> Phone number: '.$phone.'</li>';
-              echo '<li> Email: '.$email.'</li>';
+              echo '<li> Email: '.$email_accepted.'</li>';
               echo '<li> gender: '.$gender.'</li>';
               echo '<li> Appointment: '.$appointment.'</li>';
-              echo '<li> Department: '.$department.'</li>';
+              echo '<li> Department: '.$department_accepted.'</li>';
               echo '<li> Complain: '.$complain.'</li>';
               echo '<li> Appointment Date: '.$appointment_date.'</li>';
               echo '<li> Appointment Time: '.$appointment_time.'</li>';
-            
+                @$fix_appointment=true;
              
-              accept_appointment();
+              
               }
-            if(isset($_POST['department'])&&!empty($_POST['department'])&&isset($_POST['email'])&&!empty($_POST['email'])&&isset($_POST['feedback'])&&!empty($_POST['feedback'])){
-              $department=$_POST['department'];
-              $email=$_POST['email'];
-              $feedback=$_POST['feedback'];
-
-                      $allUsers= scandir("acceptAppointment");
-              $countallUsers= count($allUsers);
-              $nextUserid=($countallUsers-2);
-            $userobject=[
-              'id'=> $nextUserid,
-              'email'=>$email,
-              'department'=>$department,
-              'feedback'=>$feedback,
-              'PersonsName'=>$_SESSION['firstname_login']." ".$_SESSION['lastname_login'],
-              'Personsemail'=>$_SESSION['email_login'],
-              'Reg_date_time'=> date('D M Y / H:i',time()),
-            ];
-                      
-          //save user data into file
-          $time= date('H i',time());
-          file_put_contents("acceptAppointment/$time".$email . ".json",json_encode($userobject));
-          $_SESSION['message']="Succesfully accepted patient appointment ";
-              header("Location: dashboard.php");
-              die();
-
-
-            }
 
           }
-        }
-          echo "Please check back! $department  department has no pending patient appointment. ";
+        }if(@$fix_appointment==false){
+          echo "Please check back! ".@$department_appoint." department has no pending patient appointment. ";
+      } 
+    }else{
+      echo "<span style=color:blue>Fill in both department and patient email</span> ";
 
-      }else{
-        echo "<span style=color:blue>Fill in both department and patient email</span> ";
-
-      }
-    
     }
+  }
 
 function checkuser(){
 echo '<form action="dashboard.php" method="POST">
@@ -232,7 +251,7 @@ echo '<form action="dashboard.php" method="POST">
         @$logoutstring= file_get_contents("acceptAppointment/$currentallPays");
         @$userObject= json_decode($logoutstring);
         @$email= $userObject->email;
-        if($email == $_SESSION['email_login']){
+        if(@$email == @$_SESSION['email_login'] && !empty(@$_SESSION['email_login'])){
           @$department= $userObject->department;
           @$personsName= $userObject->PersonsName;
          @$personsemail= $userObject->Personsemail;
@@ -268,6 +287,7 @@ function logout_checker(){
 }
 function homepage_alart(){
       if(isset($_POST['logout'])){
+        if(!empty($_SESSION['email_login'])){
 echo$email=$_SESSION['email_login'];
 $id=$_SESSION['id'];
 $id=$id+1;
@@ -286,7 +306,12 @@ $timer_id=str_ireplace(":","",date('D M Y H i', time()));
        session_destroy();
        header('Location: index.php');
      }
+    }else if (!empty($_SESSION['email_login'])){
+      session_unset();
+       session_destroy();
+       header('Location: index.php');
     }
+  }
 
   if(isset($_SESSION['email_login'])&&!empty($_SESSION['email_login'])){
     echo '<a href="payment.php"><button type="submit">Online Payment</button></a>';
