@@ -1,5 +1,5 @@
 
-<?php session_destroy(); 
+<?php session_start(); 
 $curl = curl_init();
 
 $customer_email = $_SESSION['email'];
